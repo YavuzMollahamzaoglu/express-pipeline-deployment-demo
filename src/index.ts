@@ -9,6 +9,7 @@ app.get("/", (req: Request, res: Response) => {
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {
+    console.log(`Test`);
     console.log(`Example app listening at http://localhost:${port}`);
   });
 }
