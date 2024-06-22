@@ -47,7 +47,7 @@ workflows:
   version: 2
   test-and-deploy:
     jobs:
-      - test
+      - test:
           filters:
             branches:
               only:
@@ -56,6 +56,16 @@ workflows:
       - build:
           requires:
             - test
+          filters:
+            branches:
+              only:
+                - main
+                - feature/*
       # - deploy:
       #     requires:
       #       - build
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
+      #           - feature/*
