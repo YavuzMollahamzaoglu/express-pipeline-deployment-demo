@@ -31,11 +31,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Netlify CLI
-          command: npm install -g netlify-cli
+          name: Install Render CLI
+          command: |
+            curl -sSL https://render.com/install.sh | bash
+
       - run:
-          name: Deploy to Netlify
-          command: netlify deploy --dir=dist --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID
+          name: Deploy to Render
+          command: |
+            render login --email yavuz.mersin@hotmail.com --password yavuzhavva2001
+            render deploy --name my-render-app --path ./dist
 
 workflows:
   version: 2
