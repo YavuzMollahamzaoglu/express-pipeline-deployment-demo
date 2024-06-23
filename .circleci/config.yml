@@ -25,23 +25,17 @@ jobs:
           name: Build Project
           command: npm run build
 
-  # deploy:
-  #   docker:
-  #     - image: circleci/node:14
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Install Heroku CLI
-  #         command: curl https://cli-assets.heroku.com/install.sh | sh
-  #     - run:
-  #         name: Deploy to Heroku
-  #         command: |
-  #           echo "machine api.heroku.com" >> ~/.netrc
-  #           echo "  login $HEROKU_EMAIL" >> ~/.netrc
-  #           echo "  password $HEROKU_API_KEY" >> ~/.netrc
-  #           chmod 600 ~/.netrc
-  #           git remote add heroku https://git.heroku.com/$HEROKU_APP_NAME.git
-  #           git push heroku main
+  deploy:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - run:
+          name: Install Netlify CLI
+          command: npm install -g netlify-cli
+      - run:
+          name: Deploy to Netlify
+          command: netlify deploy --dir=dist --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID
 
 workflows:
   version: 2
@@ -61,11 +55,10 @@ workflows:
               only:
                 - main
                 - feature/*
-      # - deploy:
-      #     requires:
-      #       - build
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main
-      #           - feature/*
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - main
